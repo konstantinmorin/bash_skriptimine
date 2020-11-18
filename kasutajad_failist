@@ -1,0 +1,28 @@
+#!/bin/bash
+# kasutajate lisamise skript
+#kontrollime kas sisend on õige
+if [ $# -ne 1 ]; then
+	#kui valesti on, siis veateade
+	echo "Kasutusjuhend (sisesta antud kujul): $0 failinimi"
+else
+	#määrame muutujale "failinimi" 1-ne sisestatud parameeter
+	failinimi=$1
+	#kontrolline kas  sisestatud failinimi on korras
+	if [ -f $failinimi -a -r $failinimi ]; then
+		#ning teavitame kasutajad sellest
+		echo "fail on korras"
+		#paneme tsükli käima senikaua, mitu kasutajad on failis määratud
+		# sellega peaks faili sisu olema nähtav, kui fail on kätte saadav
+		for nimi in $(cat $failinimi)
+    		do
+			#prindime  failis olevaid kasutajaid 
+			echo $nimi
+			# sellega me laseme lisa_kasutaja skript tööle
+			#sh lisa_kasutaja $nimi
+    		done
+	else
+    		echo "probleem failiga $failinimi"
+  	fi
+	# parameetrite kontrolli lõpp
+fi
+
