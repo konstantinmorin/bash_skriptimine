@@ -18,7 +18,7 @@ else
 			#prindime  failis olevaid kasutajaid 
 			echo $nimi
 			# sellega me laseme lisa_kasutaja skript tööle
-			#sh lisa_kasutaja $nimi
+			sh lisa_kasutaja $nimi
     		done
 	else
     		echo "probleem failiga $failinimi"
