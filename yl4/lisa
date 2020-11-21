@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 2, siis veateade
+if [ $# -ne 2 ]; then
+	# Veateade = $0 - skripti faili nimi + kasutaja + parool
+	echo "Kasutusjuhend (sisesta käsk antud kujul): $0 kasutaja_fail parooli_fail"
+# kui võrdub 2-ga siis hakkame kasutajaid lisama
+else
+	# kasutajanimega fail on esimene parameeter, seega tuleb kasutada $1 muutujat
+	uname=$1
+	# paroolide fail on teine parameeter, siis kasutame $2 muutujat
+	pass=$2
+	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+	# kontrollime kas esimene sisestatud failinimi on õige
+	if [ -f $uname -a -r $uname ]; then
+		echo "Fail on korras!"
+		# teeme senikaua meil on kasutajaid failis on määratud
+		for nimi in $(cat $uname)
+		do
+			# määrame muutujale failist kasutajaid
+		        kasutajanimi=$(cat $uname)
+			# lisame kasutajad
+			useradd $kasutajanimi -m -s /bin/bash
+			echo "Kasutaja nimega $kasutajanimi on lisatud süsteemi!"
+			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
+			cat /etc/passwd | grep $kasutajanimi
+			# näitame loova kasutaja kodu kataloogi
+			# ls -la /home/$kasutajanimi
+			# näitame, et /home/ kaustas on loodud meie lisatava kasutaja kodukataloog
+			ls -la /home/
+		done
+	else
+		#kui valesti midagi sisetatud, siis veateade
+		echo "probleem failiga $name!"
+                echo "probleemi kood on $?"
+
+	fi
+	if [ -f $pass -a -r $pass ]; then
+		echo "Fail on korras!"
+        	# teeme senikaua meil on kasutajaid failis on määratud
+		for parool in $(cat $pass)
+		do
+			echo "$uname" | chpasswd
+		done
+	else
+		 #kui valesti midagi sisetatud, siis veateade
+                echo "probleem failiga $pass!"
+                echo "probleemi kood on $?"
+	fi
+fi
