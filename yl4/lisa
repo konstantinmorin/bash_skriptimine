@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 2, siis veateade
 if [ $# -ne 2 ]; then
 	# Veateade = $0 - skripti faili nimi + kasutaja + parool
@@ -32,7 +31,6 @@ else
 			#kui valesti midagi sisetatud, siis veateade
 			echo "probleem failiga $uname!"
         	        echo "probleemi kood on $?"
-
 		fi
 	done
 	# teeme senikaua meil paroole failis on määratud
@@ -41,8 +39,8 @@ else
 		if [ -f $pass -a -r $pass ]; then
 			echo "Fail on korras!"
 			username=$(cat /home/user/skriptid/bash_skriptimine/yl4/name | cut -f1)
-        		password=$(cat /home/user/skriptid/bash_skriptimine/yl4/pass | cut -f1)
-			echo "$username" | chpasswd [$password]
+        		#password=$(cat /home/user/skriptid/bash_skriptimine/yl4/pass | cut -f1)
+			echo "$username" | chpasswd [$parool]
 		else
 			#kui valesti midagi sisetatud, siis veateade
 	                echo "probleem failiga $pass!"
