@@ -11,40 +11,41 @@ else
 	# paroolide fail on teine parameeter, siis kasutame $2 muutujat
 	pass=$2
 	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
-	# kontrollime kas esimene sisestatud failinimi on õige
-	if [ -f $uname -a -r $uname ]; then
-		echo "Fail on korras!"
-		# teeme senikaua meil on kasutajaid failis on määratud
-		for nimi in $(cat $uname)
-		do
+	for nimi in $(cat $uname)
+	do
+		# kontrollime kas esimene sisestatud failinimi on õige
+		if [ -f $uname -a -r $uname ]; then
+			echo "Fail on korras!"
+			# teeme senikaua meil on kasutajaid failis on määratud
 			# määrame muutujale failist kasutajaid
-		        kasutajanimi=$(cat $uname)
-			# lisame kasutajad
-			useradd $kasutajanimi -m -s /bin/bash
+		        kasutajanimi=$(echo "$nimi" | cut -f1)
+			# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+			useradd $nimi -m -s /bin/bash
 			echo "Kasutaja nimega $kasutajanimi on lisatud süsteemi!"
 			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
-			cat /etc/passwd | grep $kasutajanimi
+			#cat /etc/passwd | grep $kasutajanimi
 			# näitame loova kasutaja kodu kataloogi
 			# ls -la /home/$kasutajanimi
 			# näitame, et /home/ kaustas on loodud meie lisatava kasutaja kodukataloog
 			ls -la /home/
-		done
-	else
-		#kui valesti midagi sisetatud, siis veateade
-		echo "probleem failiga $name!"
-                echo "probleemi kood on $?"
+		else
+			#kui valesti midagi sisetatud, siis veateade
+			echo "probleem failiga $uname!"
+        	        echo "probleemi kood on $?"
 
-	fi
-	if [ -f $pass -a -r $pass ]; then
-		echo "Fail on korras!"
-        	# teeme senikaua meil on kasutajaid failis on määratud
-		for parool in $(cat $pass)
-		do
-			echo "$uname" | chpasswd
-		done
-	else
-		 #kui valesti midagi sisetatud, siis veateade
-                echo "probleem failiga $pass!"
-                echo "probleemi kood on $?"
-	fi
+		fi
+	done
+	# teeme senikaua meil paroole failis on määratud
+        for parool in $(cat $pass)
+	do
+		if [ -f $pass -a -r $pass ]; then
+			echo "Fail on korras!"
+        		#password=$(cat $pass)
+			echo $uname | chpasswd
+		else
+			#kui valesti midagi sisetatud, siis veateade
+	                echo "probleem failiga $pass!"
+        	        echo "probleemi kood on $?"
+		fi
+	done
 fi
