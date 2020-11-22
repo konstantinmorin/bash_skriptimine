@@ -38,9 +38,13 @@ else
 	do
 		if [ -f $pass -a -r $pass ]; then
 			echo "Fail on korras!"
-			username=$(cat /home/user/skriptid/bash_skriptimine/yl4/name | cut -f1)
-        		#password=$(cat /home/user/skriptid/bash_skriptimine/yl4/pass | cut -f1)
-			echo "$username" | chpasswd [$parool]
+			#määrame muutujale "n" name failist kasutajanimi
+			n=$(cat $name)
+			#määrame muutujale "p" pass failist parooli
+			p=$(cat $pass)
+			#liidame kokku nad ja määrame muutujale "var"
+			var=$(echo "$n:$p")
+			echo "$var" | chpasswd
 		else
 			#kui valesti midagi sisetatud, siis veateade
 	                echo "probleem failiga $pass!"
