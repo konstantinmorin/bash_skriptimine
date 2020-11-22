@@ -31,10 +31,11 @@ else
         		do
 				if [ -f $pass -a -r $pass ]; then
 					echo "$pass fail on korras!"
-                        		#username=$(cat /home/user/skriptid/bash_skriptimine/yl4/name | cut -f1)
-	                        	#password=$(cat /home/user/skriptid/bash_skriptimine/yl4/pass | cut -f1)
+					#määrame muutujale var kahest failist väärtuse kujul nimi:parool
+                        		var=$(echo "$nimi:$pass")
+					echo $var
 					#parooli määramine ????
-        	                	cat "$nimi" | chpasswd
+        	                	echo "$var" | chpasswd
 					break
                 		else
                         		#kui valesti midagi sisetatud, siis veateade
