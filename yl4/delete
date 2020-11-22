@@ -1,0 +1,10 @@
+#!/bin/bash
+#kasutajate "kost, mor, tan" kustutamine
+
+deluser kost
+deluser mor
+deluser tan
+
+rm -rf /home/kost/
+rm -rf /home/mor/
+rm -rf /home/tan/
