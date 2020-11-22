@@ -40,8 +40,9 @@ else
 	do
 		if [ -f $pass -a -r $pass ]; then
 			echo "Fail on korras!"
-        		#password=$(cat $pass)
-			echo $uname | chpasswd
+			username=$(cat /home/user/skriptid/bash_skriptimine/yl4/name | cut -f1)
+        		password=$(cat /home/user/skriptid/bash_skriptimine/yl4/pass | cut -f1)
+			echo "$username" | chpasswd [$password]
 		else
 			#kui valesti midagi sisetatud, siis veateade
 	                echo "probleem failiga $pass!"
