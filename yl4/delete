@@ -8,3 +8,5 @@ deluser tan
 rm -rf /home/kost/
 rm -rf /home/mor/
 rm -rf /home/tan/
+
+ls -la /home/
