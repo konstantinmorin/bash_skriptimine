@@ -12,7 +12,7 @@ else
 	if [ -f $uname -a -r $uname ]; then
 		for nimi in $(cat $uname)
         	do
-			echo "Fail on $uname KORRAS!"
+			echo "Fail nimega $uname KORRAS!"
 			# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
 			useradd $nimi -m -s /bin/bash
 			echo "Kasutaja nimega $nimi on lisatud süsteemi!"
@@ -26,20 +26,22 @@ else
 			echo "probleem failiga $uname!"
         	        echo "probleemi kood on $?"
 	fi
+	#määrame muutujale pass teekond faili nimega "pass"
 	pass=./pass
 	#teeme 3 parooli 10 sümboli pikkused ning salvestame faili "pass"
 	makepasswd --count 3 --minchars 10 > $pass
 	#siin liidame 2 faili kokku ning paneme : vahele (chpasswd jaoks)
 	#pastime=$(paste -d":" $uname $pass)	#kuidas muutujasse salvestada
 	paste -d":" $uname $pass > name_pass
-	cat ./name_pass
+	#kontrollime kas faili "name_pass" on õiges formaadis salvestatud
+	#cat ./name_pass
 	# teeme senikaua meil paroole failis on määratud
 	for parool in $(cat ./name_pass)
 	do
-		echo "----------Kontrollime parool muutuja: $parool   -----------"
+		#echo "----------Kontrollime parool muutuja: $parool   -----------"
 		echo "$parool" | chpasswd
 	done
-	#rm ./pass
-	#rm ./name_pass
+	rm ./pass
+	rm ./name_pass
+	ls -la /home/
 fi
-ls -la /home/
