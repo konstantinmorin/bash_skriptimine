@@ -1,12 +1,41 @@
 #!/bin/bash
+
 #kasutajate "kost, mor, tan" kustutamine
 
-deluser kost
-deluser mor
-deluser tan
+#deluser kost
+#deluser mor
+#deluser tan
 
-rm -rf /home/kost/
-rm -rf /home/mor/
-rm -rf /home/tan/
+#rm -rf /home/kost/
+#rm -rf /home/mor/
+#rm -rf /home/tan/
+#echo "Kasutajad kost, mor, tan on kustutatud süsteemist koos kodukataloogiga"
+#uname=$(/home/user/skriptid/bash_skriptimine/yl4/name)
 
-ls -la /home/
+#kasutajate failist "name" kustutamine
+ls -l /home/ | grep -v total | cut -d":" -f2 | cut -d" " -f2 | grep -v user > ./delusers
+echo "Ole ettevaatlik!!!"
+echo "Nüüd kustutakse kasutajad:"
+for nimi in $(cat ./name)
+	do
+		echo $nimi
+	done
+echo "Oled kindel?? Y/n:"
+read olenkindel
+if [ $olenkindel = "y" ] || [ $olenkindel = "Y" ]; then
+	for nimi in $(cat ./delusers)
+	do
+		echo "Kustutan kasutaja nimega $nimi"
+		sleep 2
+   	    	deluser $nimi
+		#delgroup $nimi
+        	rm -rf /home/$nimi/
+	done
+else 
+	echo "Ok! Ei kustuta midagi!!"
+fi
+#kontrollime kas kasutajad sai kustutatud
+#ls -la /home/
+#cat /etc/passwd/ | grep $nimi
+#cat /etc/shadow/ | grep $nimi
+
