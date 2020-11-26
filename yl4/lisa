@@ -9,46 +9,45 @@ else
 	uname=$1
 	# paroolide fail on teine parameeter, siis kasutame $2 muutujat
 	pass=$2
+	#siin liidame 2 faili kokku ning paneme : vahele (chpasswd jaoks)
+	#saab ka muutujale seda määrata var=paste -d":" $uname $pass
+	paste -d":" $uname $pass > ./uname_pass
+	more ./uname_pass
 	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
-	for nimi in $(cat $uname)
-	do
-		# kontrollime kas esimene sisestatud failinimi on õige
-		if [ -f $uname -a -r $uname ]; then
-			echo "Fail on korras!"
-			# teeme senikaua meil on kasutajaid failis on määratud
-			# määrame muutujale failist kasutajaid
-		        kasutajanimi=$(echo "$nimi" | cut -f1)
+	# kontrollime kas esimene sisestatud failinimi on õige
+	if [ -f $uname -a -r $uname ]; then
+		for nimi in $(cat $uname)
+        	do
+			echo "Fail on $uname KORRAS!"
 			# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
 			useradd $nimi -m -s /bin/bash
-			echo "Kasutaja nimega $kasutajanimi on lisatud süsteemi!"
+			echo "Kasutaja nimega $nimi on lisatud süsteemi!"
 			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
 			#cat /etc/passwd | grep $kasutajanimi
 			# näitame loova kasutaja kodu kataloogi
 			# ls -la /home/$kasutajanimi
 			# näitame, et /home/ kaustas on loodud meie lisatava kasutaja kodukataloog
-			ls -la /home/
-		else
+		done
+	else
 			#kui valesti midagi sisetatud, siis veateade
 			echo "probleem failiga $uname!"
         	        echo "probleemi kood on $?"
-		fi
-	done
+	fi
+	ls -la /home/
+
 	# teeme senikaua meil paroole failis on määratud
-        for parool in $(cat $pass)
+        for var in $(cat ./uname_pass)
 	do
-		if [ -f $pass -a -r $pass ]; then
-			echo "Fail on korras!"
-			#määrame muutujale "n" name failist kasutajanimi
-			n=$(cat $name)
-			#määrame muutujale "p" pass failist parooli
-			p=$(cat $pass)
-			#liidame kokku nad ja määrame muutujale "var"
-			var=$(echo "$n:$p")
+		if [ -f ./uname_pass -a -r ./uname_pass ]; then
+			echo "Fail $pass on korras!"
+			echo "----------Kontrollime var muutuja: $var   -----------"
 			echo "$var" | chpasswd
+			##more /etc/shadow | grep ""
 		else
 			#kui valesti midagi sisetatud, siis veateade
 	                echo "probleem failiga $pass!"
         	        echo "probleemi kood on $?"
 		fi
 	done
+rm ./uname_pass
 fi
