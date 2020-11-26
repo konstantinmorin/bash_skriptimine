@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#kasutajate "kost, mor, tan" kustutamine
+#deluser kost
+#deluser mor
+#deluser tan
+#rm -rf /home/kost/
+#rm -rf /home/mor/
+#rm -rf /home/tan/
+#echo "Kasutajad kost, mor, tan on kustutatud süsteemist koos kodukataloogiga"
+#uname=$(/home/user/skriptid/bash_skriptimine/yl4/name)
+
+#kasutajate failist "delusers" kustutamine - OLE ETTEVATLIK - võid user ära kustutada!
+#otsib kõik kasutajad peale "user" /home / kataloogist
+ls -l /home/ | grep -v total | cut -d":" -f2 | cut -d" " -f2 | grep -v user > ./delusers
+echo "Ole ettevaatlik!!!"
+echo "Nüüd kustutakse kasutajad:"
+for nimi in $(cat ./name)
+	do
+		echo $nimi
+	done
+echo "Oled kindel?? Y/n:"
+read olenkindel
+if [ $olenkindel = "y" ] || [ $olenkindel = "Y" ]; then
+	for nimi in $(cat ./delusers)
+	do
+		echo "Kustutan kasutaja nimega $nimi"
+		#paneb 2 sekundised pausi, kasutaja jaoks on parem jälgida niimodi
+		#sleep 2
+   	    	deluser $nimi
+		#delgroup $nimi
+        	rm -rf /home/$nimi/
+		echo "Kasutaja $nimi on kustutatud süsteemist!"
+	done
+else 
+	echo "Ok! Ei kustuta midagi!!"
+fi
+
+#enne skripti lõpetamist kustutame meie pooolt loodu faili kasutajate kustutamiseks
+rm ./delusers
+#kontrollime kas kasutajad sai kustutatud
+ls -la /home/
+cat /etc/passwd | grep $nimi
+cat /etc/shadow | grep $nimi
+

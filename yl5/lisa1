@@ -1,0 +1,56 @@
+#!/bin/bash
+# kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 2, siis veateade
+if [ $# -ne 2 ]; then
+	# Veateade = $0 - skripti faili nimi + kasutaja + parool
+	echo "Kasutusjuhend (sisesta käsk antud kujul): $0 kasutaja_fail parooli_fail"
+# kui võrdub 2-ga siis hakkame kasutajaid lisama
+else
+	# kasutajanimega fail on esimene parameeter, seega tuleb kasutada $1 muutujat
+	uname=$1
+	# paroolide fail on teine parameeter, siis kasutame $2 muutujat
+	pass=$2
+	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+##	$x=0
+	for nimi in $(cat $uname)
+	do
+##		$x=$x+1
+##		echo "Kasutaja nimi: $nimi  salvestan faili ./kasutaja$x"
+##		echo $nimi > ./kasutaja$x
+##		more ./kasutaja$x
+		# kontrollime kas sisestatud failinimid on õiged
+		if [ -f $uname -a -r $uname ]; then
+			echo "$uname fail on korras!"
+			# teeme senikaua meil on kasutajaid failis on määratud
+			# määrame muutujale failist kasutajaid
+		        kasutajanimi=$(echo "$nimi" | cut -f1)
+			# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+			useradd $nimi -m -s /bin/bash
+			echo "Kasutaja nimega $kasutajanimi on lisatud süsteemi!"
+			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
+			#cat /etc/passwd | grep $kasutajanimi
+			# näitame, et /home/ kaustas on loodud meie lisatava kasutaja kodukataloog
+			ls -la /home/
+			for parool in $(cat $pass)
+        		do
+				if [ -f $pass -a -r $pass ]; then
+					echo "$pass fail on korras!"
+					#määrame muutujale var kahest failist väärtuse kujul nimi:parool
+                        		var=$(echo "$nimi:$parool")
+					echo $var
+					#parooli määramine ????
+        	                	echo "$var" | chpasswd
+			break
+                		else
+                        		#kui valesti midagi sisetatud, siis veateade
+                       			echo "probleem failiga $pass!"
+                        		echo "probleemi kood on $?"
+                		fi
+        		done
+
+		else
+			#kui valesti midagi sisetatud, siis veateade
+			echo "probleem failiga $uname!"
+        	        echo "probleemi kood on $?"
+		fi
+	done
+fi

@@ -1,0 +1,45 @@
+#!/bin/bash
+# kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 2, siis veateade
+if [ $# -ne 1 ]; then
+	# Veateade = $0 - skripti faili nimi + kasutaja
+	echo "Kasutusjuhend (sisesta käsk antud kujul): $0 kasutaja_fail"
+# kui võrdub 1-ga siis hakkame kasutajaid lisama
+else
+	# kasutajanimega fail on esimene parameeter, seega tuleb kasutada $1 muutujat
+	uname=$1
+	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+	# kontrollime kas esimene sisestatud failinimi on õige
+	if [ -f $uname -a -r $uname ]; then
+		for nimi in $(cat $uname)
+        	do
+			echo "Fail on $uname KORRAS!"
+			# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+			useradd $nimi -m -s /bin/bash
+			echo "Kasutaja nimega $nimi on lisatud süsteemi!"
+			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
+			#cat /etc/passwd | grep $kasutajanimi
+			# näitame loova kasutaja kodu kataloogi
+			# ls -la /home/$kasutajanimi
+		done
+	else
+			#kui valesti midagi sisetatud, siis veateade
+			echo "probleem failiga $uname!"
+        	        echo "probleemi kood on $?"
+	fi
+	pass=./pass
+	#teeme 3 parooli 10 sümboli pikkused ning salvestame faili "pass"
+	makepasswd --count 3 --minchars 10 > $pass
+	#siin liidame 2 faili kokku ning paneme : vahele (chpasswd jaoks)
+	#pastime=$(paste -d":" $uname $pass)	#kuidas muutujasse salvestada
+	paste -d":" $uname $pass > name_pass
+	cat ./name_pass
+	# teeme senikaua meil paroole failis on määratud
+	for parool in $(cat ./name_pass)
+	do
+		echo "----------Kontrollime parool muutuja: $parool   -----------"
+		echo "$parool" | chpasswd
+	done
+	#rm ./pass
+	#rm ./name_pass
+fi
+ls -la /home/
