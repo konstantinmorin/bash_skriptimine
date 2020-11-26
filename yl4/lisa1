@@ -10,8 +10,13 @@ else
 	# paroolide fail on teine parameeter, siis kasutame $2 muutujat
 	pass=$2
 	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
+##	$x=0
 	for nimi in $(cat $uname)
 	do
+##		$x=$x+1
+##		echo "Kasutaja nimi: $nimi  salvestan faili ./kasutaja$x"
+##		echo $nimi > ./kasutaja$x
+##		more ./kasutaja$x
 		# kontrollime kas sisestatud failinimid on õiged
 		if [ -f $uname -a -r $uname ]; then
 			echo "$uname fail on korras!"
