@@ -28,8 +28,6 @@ else
 			echo "Kasutaja nimega $kasutajanimi on lisatud süsteemi!"
 			# prindime väljundi  /etc/passwd failist, lõigates loova kasuta nime järgi
 			#cat /etc/passwd | grep $kasutajanimi
-			# näitame loova kasutaja kodu kataloogi
-			# ls -la /home/$kasutajanimi
 			# näitame, et /home/ kaustas on loodud meie lisatava kasutaja kodukataloog
 			ls -la /home/
 			for parool in $(cat $pass)
@@ -37,11 +35,11 @@ else
 				if [ -f $pass -a -r $pass ]; then
 					echo "$pass fail on korras!"
 					#määrame muutujale var kahest failist väärtuse kujul nimi:parool
-                        		var=$(echo "$nimi:$pass")
+                        		var=$(echo "$nimi:$parool")
 					echo $var
 					#parooli määramine ????
         	                	echo "$var" | chpasswd
-					break
+			break
                 		else
                         		#kui valesti midagi sisetatud, siis veateade
                        			echo "probleem failiga $pass!"
