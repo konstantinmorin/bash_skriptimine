@@ -1,10 +1,15 @@
 #!/bin/bash
-# kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 2, siis veateade
-if [ $# -ne 1 ]; then
+# kontrollime kes üritab käivitada skripti, kui ei ole root = error
+if (( $EUID != 0 )); then
+	echo "Käivitage skripti root kasutaja alt!"
+	exit 1
+else
+  # kontrollime sisendit - kui arv sisestatud parameetreid ei võrdu 1, siis veateade
+  if [ $# -ne 1 ]; then
 	# Veateade = $0 - skripti faili nimi + kasutaja
 	echo "Kasutusjuhend (sisesta käsk antud kujul): $0 kasutaja_fail"
-# kui võrdub 1-ga siis hakkame kasutajaid lisama
-else
+  # kui võrdub 1-ga siis hakkame kasutajaid lisama
+  else
 	# kasutajanimega fail on esimene parameeter, seega tuleb kasutada $1 muutujat
 	uname=$1
 	# kasutame kasutaja lisamise käsk + bash keskkonda kasutaja jaoks loomine
@@ -44,4 +49,5 @@ else
 	rm ./pass
 	rm ./name_pass
 	ls -la /home/
+  fi
 fi
