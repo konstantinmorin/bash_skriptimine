@@ -1,15 +1,11 @@
 #!/bin/bash
 #see skript kontrollib kes skripti käivitab ning kas on kasutatud "sudo" käsku
-sudo=$(grep user /etc/sudoers)
-if [ $sudo = "" ]; then
-  echo "Teil ei ole õigust käivitada kasutades käsuga sudo!"
-else
-  # kontrollime kes üritab käivitada skripti, kui ei ole root = error
-  #0=root; != tähendab ei võrdu nulliga
-  if [ $EUID != 0 ]; then
+# kontrollime kes üritab käivitada skripti, kui ei ole root = error
+#0=root; != tähendab ei võrdu nulliga
+if [ $EUID != 0 ]; then
 	echo "Käivitage see skripti root kasutaja alt!"
 	exit 1
-  else
+else
     # kontrollime sisendit - kui arv sisestatud parameetreid ($#) ei võrdu 1, siis veateade
     if [ $# -ne 1 ]; then
 	# Veateade = $0 - skripti faili nimi + kasutaja
@@ -56,5 +52,4 @@ else
 	rm ./name_pass
 	ls -la /home/
     fi
-  fi
 fi
