@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#skript kustutab Apache serveri arvutist ning kontrollib kas on juba eelnevalt installitud
+APACHE=$(dpkg-query -W -f='${Status}' apache2 2>/dev/null | grep -c 'ok installed')
+#kontrollime kas "ok installed" leiab (peab võrduma 0-ga), kui ei siis veateade
+if [ $APACHE -eq 0 ]; then
+	eche "Installime Apache serveri!"
+	sh /home/user/skriptid/bash_skriptimine/haldus/apache
+elif [ $APACHE -eq 1 ]; then
+	echo "Apache2 on juba installitud! Apache kustutatakse!"
+	sudo apt-get --purge remove apache*
+        sudo apt-get autoremove
+        sudo apt-get autoclean
+	sleep 1
+	echo "Tehtud"
+fi
+
+#end
+
+
