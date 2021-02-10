@@ -15,4 +15,9 @@ elif [ $APACHE -eq 1 ]; then
 	service apache2 status
 	sleep 2
 	service apache2 start
+	sleep 2
+	echo "vahetame vaikimisi veebilehte"
+	sed -i "s/Apache2 Debian Default Page/Morin Apache Page/g" /var/www/html/index.html
+	echo "tehtud"
 fi
+
